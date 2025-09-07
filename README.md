@@ -10,44 +10,18 @@ REST API для добавления заказа по ID
 - **Infrastructure Layer** - реализация подключения к БД и репозиториев
 - **Application Layer** - сервисы, контроллеры и DTO
 
-## Структура проекта
-
-```
-Task3/
-├── app/
-│   ├── domain/
-│   │   ├── models/
-│   │   │   ├── __init__.py
-│   │   │   └── order.py
-│   │   └── repositories/
-│   │       ├── __init__.py
-│   │       └── order_repository.py
-│   ├── infrastructure/
-│   │   ├── database/
-│   │   │   ├── __init__.py
-│   │   │   └── connection.py
-│   │   └── repositories/
-│   │       ├── __init__.py
-│   │       └── order_repository_impl.py
-│   └── application/
-│       ├── controllers/
-│       │   ├── __init__.py
-│       │   └── order_controller.py
-│       ├── services/
-│       │   ├── __init__.py
-│       │   └── order_service.py
-│       └── dto/
-│           ├── __init__.py
-│           └── order_dto.py
-├── main.py
-├── requirements.txt
-└── README.md
-```
-
 ## Установка и запуск
 
 ```bash
 pip install -r requirements.txt
+```
+
+Или
+
+```bash
+cd {...}/demo_task
+docker build -t task3-app ./Task3
+docker-compose up -d
 ```
 
 ### Настройка базы данных
@@ -61,18 +35,6 @@ pip install -r requirements.txt
    DB_USER=postgres
    DB_PASSWORD=postgres
    ```
-
-### Запуск приложения
-
-```bash
-python main.py
-```
-
-Или с помощью uvicorn:
-
-```bash
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-```
 
 ## API Документация
 
