@@ -22,18 +22,12 @@ class AddOrderedGoodResponse(BaseModel):
     """DTO для ответа при добавлении товара в заказ"""
     success: bool = Field(..., description="Успешность операции")
     message: str = Field(..., description="Сообщение о результате")
-    order_id: Optional[int] = Field(None, description="ID заказа")
-    good_id: Optional[int] = Field(None, description="ID товара")
-    amount: Optional[int] = Field(None, description="Количество товара")
     
     class Config:
         json_schema_extra = {
             "example": {
                 "success": True,
-                "message": "Товар успешно добавлен в заказ",
-                "order_id": 1,
-                "good_id": 5,
-                "amount": 2
+                "message": "Товар успешно добавлен в заказ"
             }
         }
 

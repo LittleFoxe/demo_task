@@ -26,7 +26,7 @@ router = APIRouter(prefix="/orders", tags=["orders"])
     response_model=AddOrderedGoodResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Добавить товар в заказ",
-    description="Добавляет товар в существующий заказ с указанным количеством"
+    description="Добавляет товар в существующий заказ с указанным количеством. Уменьшает количество товара на складе."
 )
 async def add_good_to_order(
     request: AddOrderedGoodRequest,
@@ -39,7 +39,12 @@ async def add_good_to_order(
     - **good_id**: ID товара для добавления
     - **amount**: Количество товара (должно быть больше 0)
     
-    Возвращает результат операции с детальной информацией.
+    **Побочные эффекты:**
+    - Уменьшает количество товара на складе на указанное количество
+    - Если товар уже есть в заказе, увеличивает его количество в заказе
+    - Если товара нет в наличии, возвращает ошибку 400
+    
+    Возвращает результат операции с информацией об остатке на складе.
     """
     try:
         response = await order_service.add_ordered_good(request)

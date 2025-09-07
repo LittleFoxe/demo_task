@@ -11,6 +11,7 @@ class OrderRepositoryImpl(OrderRepository):
     async def get_order_by_id(self, order_id: int) -> Optional[Order]:
         """Получить заказ по ID"""
         query = "SELECT id, client_id FROM Orders WHERE id = $1"
+        row = await db_connection.fetch_one("SELECT * FROM Clients")
         row = await db_connection.fetch_one(query, order_id)
         
         if row:
@@ -59,8 +60,6 @@ class OrderRepositoryImpl(OrderRepository):
         query = """
             INSERT INTO Ordered_goods (order_id, good_id, amount)
             VALUES ($1, $2, $3)
-            ON CONFLICT (order_id, good_id) 
-            DO UPDATE SET amount = $3
         """
         try:
             await db_connection.execute_command(
@@ -102,3 +101,17 @@ class OrderRepositoryImpl(OrderRepository):
             return "DELETE 1" in result
         except Exception:
             return False
+    
+    async def update_good_amount(self, good_id: int, new_amount: int) -> bool:
+        """Обновить количество товара на складе"""
+        query = """
+            UPDATE Goods 
+            SET amount = $2 
+            WHERE id = $1
+        """
+        try:
+            result = await db_connection.execute_command(query, good_id, new_amount)
+            return "UPDATE 1" in result
+        except Exception:
+            return False
+    
