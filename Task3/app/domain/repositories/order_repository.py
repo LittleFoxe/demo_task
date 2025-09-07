@@ -35,3 +35,8 @@ class OrderRepository(ABC):
     async def delete_ordered_good(self, order_id: int, good_id: int) -> bool:
         """Удалить товар из заказа"""
         pass
+    
+    @abstractmethod
+    async def update_good_amount(self, good_id: int, new_amount: int) -> bool:
+        """Обновить количество товара на складе"""
+        pass

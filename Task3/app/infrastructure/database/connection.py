@@ -1,20 +1,23 @@
 import asyncio
 import asyncpg
+import os
 from typing import Optional
 from contextlib import asynccontextmanager
+from dotenv import load_dotenv
+
+# Загружаем переменные окружения из .env файла
+load_dotenv()
 
 
 class DatabaseConnection:
     """Сервис для подключения к PostgreSQL"""
     
-    def __init__(self, host: str = "localhost", port: int = 5432, 
-                 database: str = "postgres", user: str = "postgres", 
-                 password: str = "postgres"):
-        self.host = host
-        self.port = port
-        self.database = database
-        self.user = user
-        self.password = password
+    def __init__(self):
+        self.host = os.getenv("DB_HOST", "localhost")
+        self.port = int(os.getenv("DB_PORT", "5432"))
+        self.database = os.getenv("DB_NAME", "postgres")
+        self.user = os.getenv("DB_USER", "postgres")
+        self.password = os.getenv("DB_PASSWORD", "postgres")
         self._pool: Optional[asyncpg.Pool] = None
     
     async def create_pool(self, min_size: int = 10, max_size: int = 20) -> None:
